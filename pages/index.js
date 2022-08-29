@@ -37,14 +37,14 @@ export default function Home() {
   return (
     <div className={styles.container}>
       <Head>
-        <title>Demo Game Number Guessing</title>
+        <title>Demo Game Guess Number</title>
         <meta name="description" content="Demo Game Guess Number" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Number Guessing
+          Guess Number
         </h1>
 
         <Paper elevation={3} sx={{marginTop: '40px', padding: '20px'}} >

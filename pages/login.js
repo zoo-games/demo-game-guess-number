@@ -14,7 +14,7 @@ export default function Login() {
     <div className={styles.container}>
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Number Guessing
+        Guess Number
         </h1>
 
         <Paper elevation={3} sx={{marginTop: '40px', padding: '20px'}}>
