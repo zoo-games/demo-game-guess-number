@@ -34,6 +34,8 @@ export default function Login() {
               if (content.success) {
                 localStorage.setItem('jwt', content.data);
                 router.push('/');
+              } else {
+                console.log('content', content);
               }
             }}>Login</Button>
           </Stack>
