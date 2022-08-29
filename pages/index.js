@@ -52,7 +52,7 @@ export default function Home() {
             <p>Welcome {username} ~</p>
             Your current game allowance is {allowance} vZOO
             <p>Your play time left {((endTime - Date.now()/1000) / 60).toFixed(0)} mins</p>
-            <a><u>Read Game Rules</u></a>
+            <u>Read Game Rules</u>
             <Button variant='contained' >Start Game</Button>
           </Stack>
         </Paper>
