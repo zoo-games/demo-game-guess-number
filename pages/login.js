@@ -37,7 +37,7 @@ export default function Login() {
               } else {
                 console.log('content', content);
               }
-            }}>Login</Button>
+            }}>Login and Approve</Button>
           </Stack>
         </Paper>
       </main>
