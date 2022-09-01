@@ -14,6 +14,7 @@ import TableRow from '@mui/material/TableRow';
 export default function Home() {
   const router = useRouter();
   const [username, setUsername] = useState('');
+  const [primaryAddress, setPrimaryAddress] = useState('');
   const [allowance, setAllowance] = useState('0');
   const [endTime, setEndTime] = useState('');
   const [started, setStarted] = useState(false);
@@ -36,9 +37,12 @@ export default function Home() {
         if (!res.success || !res.data.allowance || !res.data.endTime || (Number(res.data.allowance) === 0 || Number(res.data.endTime*1000) <= Date.now())) {
           router.push('/login');
         } else {
+          localStorage.setItem('status', JSON.stringify(res.data));
           setUsername(res.data.username);
           setAllowance(res.data.allowance);
           setEndTime(res.data.endTime);
+          setPrimaryAddress(res.data.primaryAddress);
+          console.log('status', Number(res.data.endTime*1000) <= Date.now())
         }
       }).catch(err=>{
         console.error(err);
@@ -68,6 +72,17 @@ export default function Home() {
             <u>Read Game Rules</u>
             <p></p>
             <Button variant='contained' onClick={()=>{
+              fetch('/api/gameStart', {
+                method: 'POST',
+                headers: {
+                  'Accept': 'application/json',
+                  'Content-Type': 'application/json'
+                  },
+                body: JSON.stringify({
+                  username: username,
+                  primaryAddress: primaryAddress,
+                })
+              }).then(res=>res.json()).then(res=>{}).catch(err=>{});
               setStarted(true);
             }} >Start with 100 vZOO</Button>
           </Stack>
