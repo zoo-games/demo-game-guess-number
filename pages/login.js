@@ -5,6 +5,8 @@ import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import styles from '../styles/Home.module.css'
 
+const gameAddress = process.env.NEXT_PUBLIC_GAME_ADDR;
+
 export default function Login() {
   const router = useRouter();
   const [username, setUsername] = useState('');
@@ -28,7 +30,7 @@ export default function Login() {
                   'Accept': 'application/json',
                   'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({username, token, approval: '100', playSeconds: '3600'})
+                body: JSON.stringify({username, token, approval: '100', playSeconds: '3600', gameAddress})
               });
               const content = await rawResponse.json();
               if (content.success) {

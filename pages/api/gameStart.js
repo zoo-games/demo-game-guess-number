@@ -43,13 +43,42 @@ export default async function handler(req, res) {
     const randomNumber = Number('0x' + generateRandomNumber(2, 1)) % 10000;
     console.log('randomNumber',  randomNumber);
 
+    const gameAddress = process.env.GAME_ADDR;
 
+    let body = {
+      userJwts: [jwt],
+      userPrimaryAddresses: [primaryAddress],
+      userLockAmounts: ['10'],
+      gameAddress,
+      gameLockAmount: '10',
+    };
+
+    let bodyMessage =JSON.stringify(body);
+    let hmac = ApiKey.signData(bodyMessage, SEC_KEY);
+    let ret = await axios.post(`${api_server}/api/${API_KEY}/game/ready`, body, {headers:{Authorization: `Bearer ${hmac}`}});
+    console.log('game ready:', ret.data);
+    if (!ret.data.success) {
+      throw new Error('game ready failed');
+    }
+
+    ret = await axios.post(`${api_server}/api/${API_KEY}/game/start`, body, {headers:{Authorization: `Bearer ${hmac}`}});
+    console.log('game start:', ret.data);
+    if (!ret.data.success) {
+      throw new Error('game ready failed');
+    }
+
+    const roundId = ret.data.data.roundId;
 
     await setCacheValue(API_KEY, id, {
       random: randomNumber,
       username,
       primaryAddress,
+      roundId,
+      roundInfo: body,
+      startTime: Date.now(),
     });
+
+    retVal.data.roundId = roundId;
   } catch (error) {
     retVal.success = false;
     retVal.data.message = error.message;
@@ -58,10 +87,7 @@ export default async function handler(req, res) {
   }
 
   // // Signing body data with HMAC signing
-  let body= {
-    userJwts: [jwt],
-    userLockAmounts: [],
-  };
+  
   // let bodyMessage =JSON.stringify(body); 
   // let hmac = ApiKey.signData(bodyMessage, SEC_KEY); // hmac or SignedSignatureFromPayload  
 

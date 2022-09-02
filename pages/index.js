@@ -10,6 +10,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import { LoadingButton } from '@mui/lab'
 
 export default function Home() {
   const router = useRouter();
@@ -50,6 +51,9 @@ export default function Home() {
       })
     }
   }, [router]);
+  const [key, setKey] = useState('');
+  const [roundId, setRoundId] = useState('');
+  const [loading, setLoading] = useState(false);
   
   return (
     <div className={styles.container}>
@@ -68,10 +72,14 @@ export default function Home() {
           <Stack spacing={2} direction="column">
             <p>Welcome {username} ~</p>
             Your current game allowance is {allowance} vZOO
-            <p>Your play time left {((endTime - Date.now()/1000) / 60).toFixed(0)} mins</p>
+            {
+              (endTime - Date.now()/1000) > 0 ? <p>Your play time left {((endTime - Date.now()/1000) / 60).toFixed(0)} mins</p> : <p>Loading...</p>
+            }
             <u>Read Game Rules</u>
             <p></p>
-            <Button variant='contained' onClick={()=>{
+            <LoadingButton loading={loading} variant='contained' onClick={()=>{
+              setLoading(true);
+              const jwt = localStorage.getItem('jwt');
               fetch('/api/gameStart', {
                 method: 'POST',
                 headers: {
@@ -81,10 +89,20 @@ export default function Home() {
                 body: JSON.stringify({
                   username: username,
                   primaryAddress: primaryAddress,
+                  jwt,
                 })
-              }).then(res=>res.json()).then(res=>{}).catch(err=>{});
-              setStarted(true);
-            }} >Start with 100 vZOO</Button>
+              }).then(res=>res.json()).then(res=>{
+                console.log('res', res);
+                if (res.success) {
+                  setKey(res.data.id);
+                  setRoundId(res.data.roundId);
+                  setStarted(true);
+                }
+              }).catch(console.error).finally(()=>{
+                setLoading(false);
+              });
+              
+            }} >Start Game</LoadingButton>
           </Stack>
         </Paper>
         }
@@ -93,7 +111,7 @@ export default function Home() {
             <Stack spacing={2} direction="column">
               {/* <Stack spacing={2} direction="row">
                 <div>Allowance: {allowance} vZOO</div>
-                <p>Time Left {((endTime - Date.now()/1000) / 60).toFixed(0)} mins</p>
+                <Button>Logout</Button>
               </Stack> */}
               <Paper elevation={10} sx={{padding: '20px', textAlign: 'center'}} >
                 <span>Prize</span>
