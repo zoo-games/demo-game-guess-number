@@ -25,9 +25,10 @@ export async function setCacheValue(apikey, key, value) {
 
 export async function getCacheValue(apikey, key) {
   console.log('cache:', `https://${process.env.CACHE_API}/api/${apikey}/${process.env.GAME_NAME}-${key}`)
-  const res = await fetch(`https://${process.env.CACHE_API}/api/${API_KEY}/${apikey}/${process.env.GAME_NAME}-${key}`);
+  const res = await fetch(`https://${process.env.CACHE_API}/api/${apikey}/${process.env.GAME_NAME}-${key}`);
   const data = await res.json();
-  return data.value;
+  console.log('data', data);
+  return data.data.value;
 }
 
 export default async function handler(req, res) {
@@ -40,7 +41,7 @@ export default async function handler(req, res) {
     if (!username || !primaryAddress) {
       throw new Error('username or primaryAddress is empty');
     }
-    const randomNumber = Number('0x' + generateRandomNumber(2, 1)) % 10000;
+    const randomNumber = ('0000' + Number('0x' + generateRandomNumber(2, 1)) % 10000).slice(-4);
     console.log('randomNumber',  randomNumber);
 
     const gameAddress = process.env.GAME_ADDR;
@@ -50,7 +51,7 @@ export default async function handler(req, res) {
       userPrimaryAddresses: [primaryAddress],
       userLockAmounts: ['10'],
       gameAddress,
-      gameLockAmount: '10',
+      gameLockAmount: (20/0.98).toFixed(8),
     };
 
     let bodyMessage =JSON.stringify(body);
@@ -80,6 +81,7 @@ export default async function handler(req, res) {
 
     retVal.data.roundId = roundId;
   } catch (error) {
+    console.log(error);
     retVal.success = false;
     retVal.data.message = error.message;
   } finally {
