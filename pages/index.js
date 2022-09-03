@@ -125,6 +125,9 @@ export default function Home() {
                       .finally(() => {
                         setLoading(false);
                         setRandom('');
+                        setWinned(false);
+                        setGameOver(false);
+                        setHistory([]);
                       });
                   }}
                 >
