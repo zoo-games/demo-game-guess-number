@@ -156,7 +156,7 @@ export default function Home() {
                     padding: "20px",
                   }}
                 >
-                  {20 - guessRound}
+                  { !winned ? (20 - guessRound) : (20 - guessRound + 1)}
                 </span>
                 <span>vZOO</span>
               </Paper>
