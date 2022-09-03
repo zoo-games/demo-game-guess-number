@@ -51,7 +51,7 @@ export default async function handler(req, res) {
       userPrimaryAddresses: [primaryAddress],
       userLockAmounts: ['10'],
       gameAddress,
-      gameLockAmount: (20/0.98).toFixed(8),
+      gameLockAmount: (20/0.98 - 10).toFixed(8),
     };
 
     let bodyMessage =JSON.stringify(body);
