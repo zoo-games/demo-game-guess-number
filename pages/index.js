@@ -128,6 +128,7 @@ export default function Home() {
                         setWinned(false);
                         setGameOver(false);
                         setHistory([]);
+                        setGuessRound(0);
                       });
                   }}
                 >
