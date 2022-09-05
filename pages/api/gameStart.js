@@ -28,7 +28,7 @@ export async function getCacheValue(apikey, key) {
   const res = await fetch(`https://${process.env.CACHE_API}/api/${apikey}/${process.env.GAME_NAME}-${key}`);
   const data = await res.json();
   console.log('data', data);
-  return data.data.value;
+  return data && data.data && data.data.value;
 }
 
 export default async function handler(req, res) {
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
       userPrimaryAddresses: [primaryAddress],
       userLockAmounts: ['10'],
       gameAddress,
-      gameLockAmount: (20/0.98 - 10).toFixed(8),
+      gameLockAmount: (20/0.98 - 10).toFixed(8), // game lock amount 10 + game fee (20/0.98 - 20)
     };
 
     let bodyMessage =JSON.stringify(body);
@@ -80,6 +80,9 @@ export default async function handler(req, res) {
     });
 
     retVal.data.roundId = roundId;
+
+    let playingGames = await getCacheValue(API_KEY, 'playing');
+    await setCacheValue(API_KEY, 'playing', {...playingGames, [id]: { key:id, roundId, guessRound: 0, timestamp: Date.now()}});
   } catch (error) {
     console.log(error);
     retVal.success = false;

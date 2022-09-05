@@ -70,6 +70,20 @@ export default function Home() {
   const [winned, setWinned] = useState(false);
   const [gameOver, setGameOver] = useState(false);
   const [random, setRandom] = useState('');
+  const [leftTime, setLeftTime] = useState(500);
+  useEffect(()=>{
+    let timer = setInterval(()=>{
+      setLeftTime((pre)=>{
+        if (pre <= 0) {
+          setStarted(false);
+        }
+        return pre-1;
+      });
+    }, 1000);
+    return ()=>{
+      clearInterval(timer);
+    }
+  }, []);
 
   return (
     <div className={styles.container}>
@@ -249,6 +263,7 @@ export default function Home() {
                           .catch(console.error)
                           .finally(() => {
                             setLoading(false);
+                            setLeftTime(500);
                           });
                       }}
                     >
@@ -256,7 +271,7 @@ export default function Home() {
                     </LoadingButton>
                   </Stack>
                   <Paper sx={{ textAlign: "center" }}>
-                    You left {10 - guessRound} times
+                    You left {10 - guessRound} times ( Timeout: {leftTime} s )
                   </Paper>
                 </>
               )}

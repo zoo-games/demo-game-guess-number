@@ -92,6 +92,8 @@ export default async function handler(req, res) {
         }
       }
     }
+    let playingGames = await getCacheValue(API_KEY, 'playing');
+    await setCacheValue(API_KEY, 'playing', {...playingGames, [key]: retVal.data.gameOver ? null : { key, roundId, guessRound: guessRound + 1, timestamp: Date.now()}});
   } catch (error) {
     console.log(error);
     retVal.success = false;
