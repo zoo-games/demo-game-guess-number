@@ -25,7 +25,15 @@ export default async function handler(req, res) {
       delete playingGames[v.key];
     });
 
-    if (bads.length > 0) {
+    let empty = 0;
+    Object.keys(playingGames).map(v=>{
+      if (!playingGames[v]) {
+        empty++;
+        delete playingGames[v];
+      }
+    });
+
+    if (bads.length > 0 || empty > 0) {
       await setCacheValue(API_KEY, 'playing', playingGames);
     }
     
