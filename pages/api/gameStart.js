@@ -57,15 +57,16 @@ export default async function handler(req, res) {
     let bodyMessage =JSON.stringify(body);
     let hmac = ApiKey.signData(bodyMessage, SEC_KEY);
     let ret = await axios.post(`${api_server}/api/${API_KEY}/game/ready`, body, {headers:{Authorization: `Bearer ${hmac}`}});
-    console.log('game ready:', ret.data);
+    console.log('game ready:', JSON.stringify(ret.data));
     if (!ret.data.success) {
-      throw new Error('game ready failed');
+      throw ret.data;
     }
 
     ret = await axios.post(`${api_server}/api/${API_KEY}/game/start`, body, {headers:{Authorization: `Bearer ${hmac}`}});
-    console.log('game start:', ret.data);
+    console.log('game start:', JSON.stringify(ret.data));
     if (!ret.data.success) {
-      throw new Error('game ready failed');
+      console.log('game start failed', ret.data);
+      throw ret.data;
     }
 
     const roundId = ret.data.data.roundId;
