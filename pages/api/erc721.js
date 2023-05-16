@@ -68,6 +68,21 @@ export default async function handler(req, res) {
       console.log('erc721 burn failed', ret.data);
       throw ret.data;
     }
+
+    // get totalMintCount
+    body = {
+      tokenAddress
+    };
+
+    bodyMessage =JSON.stringify(body);
+    hmac = ApiKey.signData(bodyMessage, SEC_KEY);
+
+    ret = await axios.post(`${api_server}/api/${API_KEY}/erc721/totalMintCount`, body, {headers:{Authorization: `Bearer ${hmac}`}});
+    console.log('erc721 totalMintCount:', JSON.stringify(ret.data));
+    if (!ret.data.success) {
+      console.log('erc721 totalMintCount failed', ret.data);
+      throw ret.data;
+    }
   } catch (error) {
     console.log(error);
     retVal.success = false;
