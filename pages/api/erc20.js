@@ -33,7 +33,7 @@ export default async function handler(req, res) {
       gameAddress: gameAddress,
       tokenAddress,
       amount: '1000',
-      to: '0x55Acc2433c735DC3b075291b4156969c758cDD20',
+      username: 'lolieatapple',
     };
 
     bodyMessage =JSON.stringify(body);
@@ -51,7 +51,7 @@ export default async function handler(req, res) {
       gameAddress: gameAddress,
       tokenAddress,
       amount: '500',
-      from: '0x55Acc2433c735DC3b075291b4156969c758cDD20',
+      username: 'lolieatapple',
     };
 
     bodyMessage =JSON.stringify(body);
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
     // balance erc20 token
     body = {
       tokenAddress,
-      username: 'molin0000',
+      username: 'lolieatapple',
     };
 
     bodyMessage =JSON.stringify(body);
@@ -85,8 +85,8 @@ export default async function handler(req, res) {
       gameAddress: gameAddress,
       tokenAddress,
       amount: '50',
-      from: '0x55Acc2433c735DC3b075291b4156969c758cDD20',
-      to: '0xd207d371d7a24F65cE9CcB3C78B58f27DF279Eb2'
+      fromUser: 'lolieatapple',
+      toUser: 'molin0000'
     };
 
     bodyMessage =JSON.stringify(body);
